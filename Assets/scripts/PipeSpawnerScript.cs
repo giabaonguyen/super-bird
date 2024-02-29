@@ -15,7 +15,7 @@ public class PipeSpawnerScript : MonoBehaviour
         logicScript = GameObject.FindGameObjectWithTag("Logic").GetComponent<LogicScript>();
         if (logicScript.gameState)
         {
-            spawnPipe();
+            InvokeRepeating("SpawnPipe", timer, spawnRate);
         }
         
     }
@@ -23,6 +23,7 @@ public class PipeSpawnerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("Game state" + logicScript.gameState);
         if (logicScript.gameState)
         {
             if (timer < spawnRate)
@@ -31,13 +32,16 @@ public class PipeSpawnerScript : MonoBehaviour
             }
             else
             {
-                spawnPipe();
+                SpawnPipe();
                 timer = 0;
             }
+        } else
+        {
+            CancelInvoke("SpawnPipe");
         }
     }
 
-    void spawnPipe()
+    void SpawnPipe()
     {
         float lowestPoint = transform.position.y - heightOffset;
         float highestPoint = transform.position.y + heightOffset;

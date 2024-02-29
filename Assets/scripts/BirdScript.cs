@@ -8,15 +8,25 @@ public class BirdScript : MonoBehaviour
     public float flapStrength;
     public LogicScript logicScript;
     public bool birdIsAlive = true;
+
+    public AudioSource source;
+    public AudioClip flapSound;
+
+    public void birdFlap()
+    {
+        source.clip = flapSound;
+        source.Play();
+    }
     // Start is called before the first frame update
     void Start()
     {
 
         logicScript = GameObject.FindGameObjectWithTag("Logic").GetComponent<LogicScript>();
+    
         if (!logicScript.gameState)
         {
             myRigidBody2d.gravityScale = 0;
-            Debug.Log("BirdScript");
+            
         }
      
     }
@@ -28,9 +38,11 @@ public class BirdScript : MonoBehaviour
         {
             myRigidBody2d.gravityScale = 1;
         }
+        Debug.Log("BirdScript" + birdIsAlive + " GameState " + logicScript.gameState);
         if (Input.GetKeyDown(KeyCode.Space) && birdIsAlive && logicScript.gameState)
         {
-           
+            Debug.Log("keyDown");
+            birdFlap();
             myRigidBody2d.velocity = Vector2.up * flapStrength;
         }
         
